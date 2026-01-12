@@ -7,12 +7,42 @@ import { useState } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
+    const flash = usePage().props.flash || {};
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
+    const [showFlash, setShowFlash] = useState(true);
 
     return (
         <div className="min-h-screen bg-gray-100">
+            {/* Flash Messages */}
+            {showFlash && (flash.success || flash.error) && (
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-4">
+                    {flash.success && (
+                        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                            <span className="block sm:inline">{flash.success}</span>
+                            <button
+                                onClick={() => setShowFlash(false)}
+                                className="absolute top-0 bottom-0 right-0 px-4 py-3"
+                            >
+                                <span className="text-2xl">&times;</span>
+                            </button>
+                        </div>
+                    )}
+                    {flash.error && (
+                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                            <span className="block sm:inline">{flash.error}</span>
+                            <button
+                                onClick={() => setShowFlash(false)}
+                                className="absolute top-0 bottom-0 right-0 px-4 py-3"
+                            >
+                                <span className="text-2xl">&times;</span>
+                            </button>
+                        </div>
+                    )}
+                </div>
+            )}
+
             <nav className="border-b border-gray-100 bg-white">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
